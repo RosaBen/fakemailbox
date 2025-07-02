@@ -1,0 +1,23 @@
+<div class="container py-4">
+  <h1 class="text-center">Emails</h1>
+  <table class="table table-striped shadow-sm">
+    <thead>
+      <tr>
+        <th>Liste des Emails</th>
+        <th>Email sélectionné</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @emails.each do |email| %>
+        <tr>
+          <td>
+            <strong><%= email.object %></strong>
+          </td>
+          <td>
+            <p><%= email.body %></p>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,19 @@
+body {
+  background-color: #e6f0ff; /* très clair bleu */
+  color: #003366; /* bleu foncé */
+}
+h1 {
+  color: #004aad;
+  margin: 30px 0;
+}
+table {
+  background-color: white;
+  border-radius: 8px;
+}
+thead {
+  background-color: #004aad;
+  color: white;
+}
+tbody tr:hover {
+  background-color: #cce0ff;
+}

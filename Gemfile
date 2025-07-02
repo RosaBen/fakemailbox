@@ -64,3 +64,7 @@ group :test do
 end
 
 gem "faker", "~> 2.0" # Use Faker for generating random data in development and test environments
+
+gem "dotenv-rails", groups: [ :development, :test ]
+
+

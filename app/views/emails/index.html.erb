@@ -1,23 +1,48 @@
-<div class="container py-4">
-  <h1 class="text-center">Emails</h1>
-  <table class="table table-striped shadow-sm">
-    <thead>
-      <tr>
-        <th>Liste des Emails</th>
-        <th>Email sélectionné</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @emails.each do |email| %>
-        <tr>
-          <td>
-            <strong><%= email.object %></strong>
-          </td>
-          <td>
-            <p><%= email.body %></p>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<div class="container">
+    <h1>Gestionnaire d'Emails</h1>
+    
+    <!-- Bouton "Recevoir un email" -->
+    <%= form_with url: emails_path, method: :post, local: false, class: "d-inline" do |form| %>
+      <%= form.submit "Recevoir un email", class: "receive-email-btn btn btn-primary" %>
+    <% end %>
+    
+    <!-- Tableau principal sur 2 colonnes -->
+    <div class="email-table">
+      
+      <!-- Colonne 1: Liste des emails -->
+      <div class="email-list-column">
+        <div class="column-title">Liste des emails</div>
+        
+        <%= turbo_frame_tag "emails" do %>
+          <%= render 'shared/emails_list', emails: @emails %>
+        <% end %>
+      </div>
+      
+      <!-- Colonne 2: Email sélectionné -->
+      <div class="email-content-column">
+        <div class="column-title">Email sélectionné</div>
+        
+        <%= turbo_frame_tag "selected_email" do %>
+          <% if @selected_email %>
+            <div class="selected-email-object">
+              <%= @selected_email.object %>
+            </div>
+            
+            <div class="selected-email-body">
+              <%= @selected_email.body %>
+            </div>
+            
+            <div class="action-buttons">
+              <button class="btn btn-delete" disabled>Supprimer</button>
+              <button class="btn btn-unread" disabled>Marquer comme non-lu</button>
+            </div>
+          <% else %>
+            <div class="empty-state">
+              Sélectionnez un email dans la liste de gauche pour afficher son contenu
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      
+    </div>
+  </div>

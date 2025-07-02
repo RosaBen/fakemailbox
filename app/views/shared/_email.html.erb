@@ -1,0 +1,10 @@
+<%= link_to email_path(email), 
+    class: "email-item #{email.is_read? ? 'read' : 'unread'}",
+    data: { turbo_frame: "selected_email" } do %>
+  <div class="email-object">
+    <%= email.object %>
+  </div>
+  <div class="email-status">
+    <%= email.is_read? ? 'Lu' : 'Non lu' %>
+  </div>
+<% end %>

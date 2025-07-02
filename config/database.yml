@@ -1,8 +1,6 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: <%= ENV.fetch("PGUSER") %>
-  password: <%= ENV.fetch("PGPASSWORD") %>
   host: localhost
   port: 5432
   pool: 5
@@ -10,13 +8,17 @@ default: &default
 development:
   <<: *default
   database: gmailFake_development
+  username: <%= ENV.fetch("DATABASE_USER") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") %>
 
 test:
   <<: *default
   database: gmailFake_test
+  username: <%= ENV.fetch("DATABASE_USER") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") %>
 
 production:
   <<: *default
   database: gmailFake_production
-  username: <%= ENV.fetch("PGUSER") %>
-  password: <%= ENV.fetch("PGPASSWORD") %>
+  username: <%= ENV.fetch("DATABASE_USER") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "") %>

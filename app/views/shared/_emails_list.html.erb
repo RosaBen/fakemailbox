@@ -1,0 +1,9 @@
+<% if emails.any? %>
+  <% emails.each do |email| %>
+    <%= render 'shared/email', email: email %>
+  <% end %>
+<% else %>
+  <div class="empty-state">
+    Aucun email reçu pour le moment
+  </div>
+<% end %>

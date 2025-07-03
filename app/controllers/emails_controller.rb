@@ -15,7 +15,10 @@ class EmailsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("emails", partial: "shared/emails_list", locals: { emails: @emails })
+        render turbo_stream: [
+          turbo_stream.replace("emails", partial: "shared/emails_list", locals: { emails: @emails }),
+          turbo_stream.append("body", "<script>showFlashMessage('📧 Nouvel email reçu !', 'success');</script>".html_safe)
+        ]
       end
       format.html { redirect_to emails_path }
     end
@@ -40,6 +43,7 @@ class EmailsController < ApplicationController
 
   def destroy
     @email = Email.find(params[:id])
+    email_object = @email.object # Sauvegarder l'objet pour le message
     @email.destroy
     
     # Optimisation : on recharge la liste immédiatement après suppression
@@ -49,7 +53,8 @@ class EmailsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.replace("emails", partial: "shared/emails_list", locals: { emails: @emails }),
-          turbo_stream.replace("selected_email", partial: "shared/selected_email", locals: { selected_email: nil })
+          turbo_stream.replace("selected_email", partial: "shared/selected_email", locals: { selected_email: nil }),
+          turbo_stream.append("body", "<script>showFlashMessage('🗑️ Email \"#{email_object}\" supprimé avec succès !', 'success');</script>".html_safe)
         ]
       end
       format.html { redirect_to emails_path }
@@ -68,7 +73,8 @@ class EmailsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.replace("emails", partial: "shared/emails_list", locals: { emails: @emails }),
-          turbo_stream.replace("selected_email", partial: "shared/selected_email", locals: { selected_email: @selected_email })
+          turbo_stream.replace("selected_email", partial: "shared/selected_email", locals: { selected_email: @selected_email }),
+          turbo_stream.append("body", "<script>showFlashMessage('📭 Email marqué comme non-lu !', 'info');</script>".html_safe)
         ]
       end
       format.html { redirect_to emails_path }

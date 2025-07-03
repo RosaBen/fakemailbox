@@ -20,22 +20,39 @@ h1 {
   margin-bottom: 30px;
 }
 
+/* Styles pour le bouton "Recevoir un email" */
 .receive-email-btn {
-  display: inline-block;
-  padding: 12px 24px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
+  background: linear-gradient(45deg, #007bff, #0056b3);
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
   margin-bottom: 20px;
-  font-weight: bold;
-  transition: background-color 0.3s;
 }
 
 .receive-email-btn:hover {
-  background-color: #0056b3;
-  color: white;
-  text-decoration: none;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(0,123,255,0.4);
+  background: linear-gradient(45deg, #0056b3, #004085);
+}
+
+.receive-email-btn:active {
+  transform: translateY(-1px) scale(1.02);
+  animation: emailReceive 0.6s ease-in-out;
+}
+
+@keyframes emailReceive {
+  0% { background: linear-gradient(45deg, #007bff, #0056b3); }
+  50% { 
+    background: linear-gradient(45deg, #28a745, #20c997); 
+    box-shadow: 0 8px 30px rgba(40,167,69,0.5);
+  }
+  100% { background: linear-gradient(45deg, #007bff, #0056b3); }
 }
 
 .email-table {
@@ -79,37 +96,47 @@ h1 {
 
 .email-item {
   padding: 15px;
-  margin-bottom: 10px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
   display: block;
   color: inherit;
 }
 
 .email-item:hover {
-  background-color: #e9ecef;
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   border-color: #007bff;
   text-decoration: none;
   color: inherit;
 }
 
 .email-item.unread {
-  background-color: #e3f2fd;
+  background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+  border-left: 4px solid #007bff;
   font-weight: bold;
 }
 
 .email-item.read {
-  background-color: white;
+  background: #fafafa;
+  opacity: 0.8;
   font-weight: normal;
 }
 
 .email-object {
   font-size: 16px;
   margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+}
+
+.email-item.read .email-object {
+  color: #666;
+  font-weight: normal;
 }
 
 .email-status {
@@ -184,6 +211,41 @@ h1 {
   margin-top: 50px;
 }
 
+/* Styles pour les nouveaux emails */
+.email-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.email-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85em;
+  color: #666;
+}
+
+.new-indicator {
+  animation: pulse 2s infinite;
+  margin-right: 5px;
+}
+
+.fresh-indicator {
+  margin-left: 5px;
+  animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.email-time {
+  font-size: 0.8em;
+  font-style: italic;
+}
+
 /* Optimisations pour des mises à jour plus rapides */
 #emails, #selected_email {
   transition: opacity 0.15s ease-in-out;
@@ -198,4 +260,134 @@ h1 {
 
 .action-buttons .btn:hover {
   transform: translateZ(0); /* Force GPU acceleration */
+}
+
+/* Animations sympas pour les actions */
+@keyframes deleteShake {
+  0%, 100% { 
+    transform: scale(0.95) translateX(0); 
+    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+  }
+  25% { 
+    transform: scale(0.95) translateX(-5px) rotate(-1deg); 
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.5);
+  }
+  75% { 
+    transform: scale(0.95) translateX(5px) rotate(1deg); 
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.5);
+  }
+}
+
+@keyframes slideInRight {
+  from { 
+    transform: translateX(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes fadeInUp {
+  from { 
+    transform: translateY(10px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  50% { box-shadow: 0 4px 20px rgba(0,123,255,0.3); }
+  100% { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+}
+
+/* Animation pour les emails nouvellement ajoutés */
+.email-item.new-email {
+  animation: fadeInUp 0.5s ease-out, pulse 2s ease-in-out;
+}
+
+.email-item.new-email::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(45deg, #007bff, #28a745);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 5px rgba(0,123,255,0.5); }
+  to { box-shadow: 0 0 15px rgba(40,167,69,0.5); }
+}
+
+/* Animation pour les boutons d'action */
+.action-buttons .btn {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.action-buttons .btn:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease-in-out;
+}
+
+/* Effet de ripple pour les boutons */
+.action-buttons .btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.action-buttons .btn:active::after {
+  width: 100px;
+  height: 100px;
+}
+
+/* Messages flash personnalisés */
+.flash-message {
+  animation: slideInRight 0.5s ease-out;
+  transition: all 0.3s ease-out;
+  backdrop-filter: blur(10px);
+  border-left: 4px solid rgba(255,255,255,0.5);
+}
+
+.flash-message.hiding {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Animation pour la liste d'emails */
+.email-list-column {
+  transition: all 0.3s ease-out;
+}
+
+/* Animation hover pour les emails */
+.email-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.email-item:hover {
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  border-color: #007bff;
 }

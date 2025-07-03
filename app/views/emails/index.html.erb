@@ -2,8 +2,10 @@
     <h1>Gestionnaire d'Emails</h1>
     
     <!-- Bouton "Recevoir un email" -->
-    <%= form_with url: emails_path, method: :post, local: false, class: "d-inline" do |form| %>
-      <%= form.submit "Recevoir un email", class: "receive-email-btn btn btn-primary" %>
+    <%= form_with url: emails_path, method: :post, local: false, 
+        data: { turbo_stream: true },
+        class: "receive-email-form d-inline" do |form| %>
+      <%= form.submit "📬 Recevoir un email", class: "receive-email-btn btn btn-primary" %>
     <% end %>
     
     <!-- Tableau principal sur 2 colonnes -->

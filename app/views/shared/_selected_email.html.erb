@@ -7,9 +7,22 @@
     <%= selected_email.body %>
   </div>
   
-  <div class="action-buttons">
-    <button class="btn btn-delete" disabled>Supprimer</button>
-    <button class="btn btn-unread" disabled>Marquer comme non-lu</button>
+  <div class="action-buttons mt-3 d-flex gap-2">
+      <%= form_with url: email_path(selected_email), method: :delete, local: false, 
+          data: { 
+            turbo_confirm: "Supprimer cet email ?",
+            turbo_stream: true,
+            turbo_method: "delete"
+          }, class: "d-inline" do |form| %>
+        <%= form.submit "🗑 Supprimer", class: "btn btn-danger" %>
+      <% end %>
+      <%= form_with url: mark_as_unread_email_path(selected_email), method: :patch, local: false, 
+          data: {
+            turbo_stream: true,
+            turbo_method: "patch"
+          }, class: "d-inline" do |form| %>
+        <%= form.submit "📭 Marquer comme non-lu", class: "btn btn-secondary" %>
+      <% end %>
   </div>
 <% else %>
   <div class="empty-state">

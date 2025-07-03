@@ -44,6 +44,14 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
+  gap: 2rem;
+  margin-top: 2rem;
+  contain: layout style paint;
+}
+
+.email-list-column, .email-content-column {
+  width: 50%;
+  will-change: contents;
 }
 
 .email-list-column {
@@ -122,6 +130,7 @@ h1 {
   font-size: 16px;
   line-height: 1.6;
   color: #555;
+  margin-top: 1rem;
   margin-bottom: 30px;
   white-space: pre-line;
 }
@@ -129,25 +138,43 @@ h1 {
 .action-buttons {
   display: flex;
   gap: 10px;
+  margin-top: 20px;
 }
 
 .btn {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  cursor: not-allowed;
+  cursor: pointer;
   font-size: 14px;
-  opacity: 0.6;
+  transition: background-color 0.3s;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.btn-delete {
+.btn:hover {
+  opacity: 0.9;
+  text-decoration: none;
+}
+
+.btn-danger {
   background-color: #dc3545;
   color: white;
 }
 
-.btn-unread {
-  background-color: #ffc107;
-  color: #212529;
+.btn-danger:hover {
+  background-color: #c82333;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  color: white;
 }
 
 .empty-state {
@@ -155,4 +182,20 @@ h1 {
   font-style: italic;
   text-align: center;
   margin-top: 50px;
+}
+
+/* Optimisations pour des mises à jour plus rapides */
+#emails, #selected_email {
+  transition: opacity 0.15s ease-in-out;
+  will-change: transform, opacity;
+}
+
+/* Amélioration des performances pour les boutons */
+.action-buttons .btn {
+  transition: background-color 0.1s ease-in-out;
+  will-change: background-color;
+}
+
+.action-buttons .btn:hover {
+  transform: translateZ(0); /* Force GPU acceleration */
 }

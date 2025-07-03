@@ -23,24 +23,7 @@
         <div class="column-title">Email sélectionné</div>
         
         <%= turbo_frame_tag "selected_email" do %>
-          <% if @selected_email %>
-            <div class="selected-email-object">
-              <%= @selected_email.object %>
-            </div>
-            
-            <div class="selected-email-body">
-              <%= @selected_email.body %>
-            </div>
-            
-            <div class="action-buttons">
-              <button class="btn btn-delete" disabled>Supprimer</button>
-              <button class="btn btn-unread" disabled>Marquer comme non-lu</button>
-            </div>
-          <% else %>
-            <div class="empty-state">
-              Sélectionnez un email dans la liste de gauche pour afficher son contenu
-            </div>
-          <% end %>
+          <%= render 'shared/selected_email', selected_email: @selected_email %>
         <% end %>
       </div>
       

@@ -1,23 +1,35 @@
-<%= link_to email_path(email), 
-    class: "email-item #{email.is_read? ? 'read' : 'unread'} #{email.created_at > 1.minute.ago ? 'new-email' : ''}",
-    data: { turbo_frame: "selected_email" } do %>
-  <div class="email-content">
-    <div class="email-object">
-      <% unless email.is_read? %>
-        <span class="new-indicator">🔴</span>
-      <% end %>
-      <%= email.object %>
-      <% if email.created_at > 1.minute.ago %>
-        <span class="fresh-indicator">✨</span>
-      <% end %>
-    </div>
-    <div class="email-meta">
-      <span class="email-status">
-        <%= email.is_read? ? '✅ Lu' : '📩 Non lu' %>
-      </span>
-      <span class="email-time">
-        <%= time_ago_in_words(email.created_at) %>
-      </span>
-    </div>
+<div class="email-item-wrapper">
+  <div class="email-checkbox">
+    <%= check_box_tag :read, true, email.is_read?, 
+        data: { 
+          turbo_action: "update-email-read-status", 
+          turbo_email_id: email.id,
+          turbo_stream: true 
+        },
+        class: "email-read-checkbox" %>
   </div>
-<% end %>
+  
+  <%= link_to email_path(email), 
+      class: "email-item #{email.is_read? ? 'read' : 'unread'} #{email.created_at > 1.minute.ago ? 'new-email' : ''}",
+      data: { turbo_frame: "selected_email" } do %>
+    <div class="email-content">
+      <div class="email-object">
+        <% unless email.is_read? %>
+          <span class="new-indicator">🔴</span>
+        <% end %>
+        <%= email.object %>
+        <% if email.created_at > 1.minute.ago %>
+          <span class="fresh-indicator">✨</span>
+        <% end %>
+      </div>
+      <div class="email-meta">
+        <span class="email-status">
+          <%= email.is_read? ? '✅ Lu' : '📩 Non lu' %>
+        </span>
+        <span class="email-time">
+          <%= time_ago_in_words(email.created_at) %>
+        </span>
+      </div>
+    </div>
+  <% end %>
+</div>

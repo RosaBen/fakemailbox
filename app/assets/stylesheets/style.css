@@ -391,3 +391,81 @@ h1 {
   box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   border-color: #007bff;
 }
+
+/* Styles pour les checkboxes des emails */
+.email-item-wrapper {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.email-item-wrapper:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.email-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-right: 1px solid #dee2e6;
+}
+
+.email-read-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #007bff;
+  transform: scale(1.2);
+  transition: all 0.2s ease-in-out;
+}
+
+.email-read-checkbox:hover {
+  transform: scale(1.4);
+  filter: drop-shadow(0 2px 4px rgba(0,123,255,0.3));
+}
+
+.email-read-checkbox:checked {
+  accent-color: #28a745;
+}
+
+.email-read-checkbox:checked:hover {
+  accent-color: #20c997;
+}
+
+/* Adaptation de l'email-item pour le nouveau layout */
+.email-item-wrapper .email-item {
+  flex: 1;
+  margin-bottom: 0;
+  border-radius: 0;
+  border: none;
+  border-left: none;
+}
+
+.email-item-wrapper .email-item.new-email::before {
+  left: -1px; /* Ajuster pour le nouveau layout */
+}
+
+/* Animation pour les checkboxes */
+@keyframes checkboxPulse {
+  0% { transform: scale(1.2); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1.2); }
+}
+
+.email-read-checkbox.animating {
+  animation: checkboxPulse 0.3s ease-in-out;
+}
+
+/* Amélioration du hover pour tout le wrapper */
+.email-item-wrapper:hover .email-checkbox {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.email-item-wrapper:hover .email-read-checkbox {
+  filter: drop-shadow(0 2px 6px rgba(0,123,255,0.4));
+}

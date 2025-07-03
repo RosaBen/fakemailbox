@@ -116,6 +116,72 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   `;
   document.head.appendChild(style);
+
+  // Gestion des checkboxes pour changer le statut de lecture
+  function setupEmailCheckboxes() {
+    const checkboxes = document.querySelectorAll('.email-read-checkbox');
+
+    checkboxes.forEach(function (checkbox) {
+      checkbox.addEventListener('change', function (event) {
+        event.preventDefault(); // Empêcher le comportement par défaut
+
+        const emailId = checkbox.dataset.turboEmailId;
+        const isChecked = checkbox.checked;
+
+        // Animation de la checkbox
+        checkbox.style.transform = 'scale(1.2)';
+        checkbox.style.transition = 'transform 0.2s ease-in-out';
+
+        setTimeout(() => {
+          checkbox.style.transform = 'scale(1)';
+        }, 200);
+
+        // Effectuer la requête PATCH via Turbo
+        fetch(`/emails/${emailId}/toggle_read_status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'text/vnd.turbo-stream.html'
+          },
+          body: `read=${isChecked}`
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.text();
+            }
+            throw new Error('Erreur réseau');
+          })
+          .then(html => {
+            // Créer un élément temporaire pour parser les Turbo Streams
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Exécuter chaque Turbo Stream
+            const turboStreams = tempDiv.querySelectorAll('turbo-stream');
+            turboStreams.forEach(stream => {
+              document.body.appendChild(stream);
+              // Le navigateur va automatiquement traiter le turbo-stream
+            });
+          })
+          .catch(error => {
+            console.error('Erreur lors de la mise à jour:', error);
+            // Remettre la checkbox dans son état précédent en cas d'erreur
+            checkbox.checked = !isChecked;
+            showFlashMessage('❌ Erreur lors de la mise à jour', 'error');
+          });
+      });
+    });
+  }
+
+  // Configurer les checkboxes au chargement initial
+  setupEmailCheckboxes();
+
+  // Reconfigurer les checkboxes après chaque mise à jour Turbo Stream
+  document.addEventListener('turbo:stream-render', function (event) {
+    setupEmailCheckboxes();
+  });
 });
 
 // Fonction pour afficher les messages flash avec animation

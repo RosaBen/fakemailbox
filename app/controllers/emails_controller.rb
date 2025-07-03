@@ -80,4 +80,27 @@ class EmailsController < ApplicationController
       format.html { redirect_to emails_path }
     end
   end
+
+  def toggle_read_status
+    @email = Email.find(params[:id])
+    @email.update!(is_read: !@email.is_read?)  # Toggle le statut
+    
+    # Rechargement optimisé
+    @emails = Email.all.order(created_at: :desc)
+    @selected_email = @email.reload
+    
+    # Message selon le nouveau statut
+    status_message = @email.is_read? ? "📖 Email marqué comme lu !" : "📭 Email marqué comme non-lu !"
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace("emails", partial: "shared/emails_list", locals: { emails: @emails }),
+          turbo_stream.replace("selected_email", partial: "shared/selected_email", locals: { selected_email: @selected_email }),
+          turbo_stream.append("body", "<script>showFlashMessage('#{status_message}', 'info');</script>".html_safe)
+        ]
+      end
+      format.html { redirect_to emails_path }
+    end
+  end
 end
